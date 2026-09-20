@@ -15,7 +15,7 @@ function App() {
   }
   const handleForm = async ()=>{
     try{
-      const response = await axios.post('http://localhost:8000/registration', userData)
+      const response = await axios.post('http://localhost:8000/api/v1/registration', userData)
     }
     catch(error){
       console.log(error)
@@ -28,7 +28,7 @@ function App() {
     })
   }
   const getAllUsers = async ()=>{
-    const userInfo = await axios.get('http://localhost:8000/getAllUsers')
+    const userInfo = await axios.get('http://localhost:8000/api/v1/getAllUsers')
       setAllUsers(userInfo.data)
   }
   useEffect(()=>{
@@ -45,7 +45,7 @@ function App() {
     })
   }
   const handleFormUpdate = async ()=>{
-    await axios.post(`http://localhost:8000/update/${userId}`, userData)
+    await axios.post(`http://localhost:8000/api/v1/update/${userId}`, userData)
     getAllUsers()
     setUpdateExist(false)
     setUserData({
@@ -56,17 +56,17 @@ function App() {
   }
   const handleDelete = async (item)=>{
     console.log(item._id)
-    await axios.delete(`http://localhost:8000/delete/${item._id}`)
+    await axios.delete(`http://localhost:8000/api/v1/delete/${item._id}`)
     getAllUsers()
   }
 
 
   return (
     <>
-      <input onChange={(e)=>{handleData(e)}} value={userData.userName} type='text' name='userName' placeholder='Enter your username.....'/> <br /> <br />
-      <input onChange={(e)=>{handleData(e)}} value={userData.email} type='email' name='email' placeholder='Enter your email.....'/> <br /> <br />
-      <input onChange={(e)=>{handleData(e)}} value={userData.password} type='password' name='password' placeholder='Enter your password.....'/> <br /> <br />
-      {updateExist? <button onClick={()=>{handleFormUpdate()}}>Update</button> :  <input onClick={()=>{handleForm()}} type='submit'/>}
+      <input className='w-70 h-10 border border-black outline-0 rounded-2xl p-2' onChange={(e)=>{handleData(e)}} value={userData.userName} type='text' name='userName' placeholder='Enter your username.....'/> <br /> <br />
+      <input className='w-70 h-10 border border-black outline-0 rounded-2xl p-2' onChange={(e)=>{handleData(e)}} value={userData.email} type='email' name='email' placeholder='Enter your email.....'/> <br /> <br />
+      <input className='w-70 h-10 border border-black outline-0 rounded-2xl p-2' onChange={(e)=>{handleData(e)}} value={userData.password} type='password' name='password' placeholder='Enter your password.....'/> <br /> <br />
+      {updateExist? <button className='p-3 bg-green-700 font-semibold text-white rounded-2xl' onClick={()=>{handleFormUpdate()}}>Update</button> :  <input className='p-3 bg-green-700 font-semibold text-white rounded-2xl' onClick={()=>{handleForm()}} type='submit'/>}
       
       <div className='flex flex-wrap p-5 gap-9'>
         {
