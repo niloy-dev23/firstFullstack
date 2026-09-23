@@ -12,18 +12,25 @@ function App() {
   const handleData = (e) => {
     let { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-    console.log(userData);
   };
   const handleImage = (e) => {
-    let imageName = e.target.value.split(`\\`).pop()
-    setUserData({...userData, image:imageName})
+    setUserData({...userData, picture:e.target.files[0]})
   }
-  const handleForm = async () => {
+  const handleForm = async (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('userName', userData.userName)
+    formData.append('email', userData.email)
+    formData.append('password', userData.password)
+    formData.append('picture', userData.picture)
+    console.log([...formData.entries()]);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/registration",
-        userData,
-      );
+        "http://localhost:8000/api/v1/registration",formData, {
+          headers:{
+            'Content-Type': 'multipart/form-data',
+          },
+        });
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +57,7 @@ function App() {
     setUserData({
       userName: item.userName,
       email: item.email,
-      password: item.password,
+      password: item.password
     });
   };
   const handleFormUpdate = async () => {
@@ -71,7 +78,7 @@ function App() {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleForm}>
         <input
           className="w-70 h-10 border border-black outline-0 rounded-2xl p-2"
           onChange={(e) => {
@@ -127,9 +134,6 @@ function App() {
         ) : (
           <input
             className="p-3 bg-green-700 font-semibold text-white rounded-2xl"
-            onClick={() => {
-              handleForm();
-            }}
             type="submit"
           />
         )}
@@ -146,7 +150,7 @@ function App() {
               {item.password}
             </p>
             <p className="text-white font-semibold text-[18px]">
-              {item.image}
+              {item.picture}
             </p>
             <button
               className="p-2 bg-white rounded-2xl text-amber-600"
