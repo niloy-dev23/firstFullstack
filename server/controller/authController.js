@@ -1,11 +1,12 @@
 const userModel = require('../models/userModel')
 
 const registration = async (req, res)=>{
-    const {userName, email, password} = req.body
+    const {userName, email, password, image} = req.body
     const userInfo = new userModel({
         userName:userName,
         email:email,
-        password:password
+        password:password, 
+        image:image
     })
     try{
         await userInfo.save()
